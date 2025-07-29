@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { getUser, cloudUpload, setStory } from '../service/Api';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 import 'cropperjs/dist/cropper.css';
 import VideoCropper from './VideoCropper';
 import ImageCropper from './ImageCropper';

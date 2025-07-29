@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userData } from '../service/DB';
 import { getSearch ,setFollow,setUnfollow,getUser,sentRequest,cancelRequest } from '../service/Api';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 
 function Search(props) {
   const [searchQuery, setSearchQuery] = useState('');

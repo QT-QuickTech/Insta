@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getSuggections,setFollow,setUnfollow,sentRequest,cancelRequest } from '../service/Api';
 import { getUser } from '../service/Api';
 import { useNavigate } from 'react-router-dom';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 
 
 function SuggestionUser({ user, loggedUser, onUserClick }) {

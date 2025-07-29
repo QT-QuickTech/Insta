@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getSearch } from '../service/Api';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 
 function TagInput({ tags, setTags, placeholder = 'Tag users (@userId)', isUserTagging = true }) {
   const [inputValue, setInputValue] = useState('');

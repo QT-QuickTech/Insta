@@ -6,7 +6,7 @@ import { MdLocationPin } from "react-icons/md";
 import { useSwipeable } from 'react-swipeable';
 import PostInfo from './PostInfo';
 import { getReels,setLike,setUnlike,setSave,setUnsave ,setFollow,setUnfollow,getUser,sentRequest,cancelRequest} from '../service/Api';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 import defaultVideo from '../images/mockVideo.mp4';
 
 const INITIAL_LOAD = 10;

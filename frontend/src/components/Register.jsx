@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser, cloudUpload } from '../service/Api';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 import ImageCropper from './ImageCropper';
 
 const Register = () => {

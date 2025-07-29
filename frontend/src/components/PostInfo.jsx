@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import { commentData,likeData } from '../service/DB';
 import { getUser ,getComments ,getLikes ,setLike,setUnlike,setSave,setUnsave ,setComment} from '../service/Api';
 import { useNavigate } from 'react-router-dom';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 import defaultVideo from '../images/mockVideo.mp4';
 import defaultImage from '../images/mockImage.jpg';
 

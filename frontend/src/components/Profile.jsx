@@ -4,7 +4,7 @@ import { getUser ,getPosts,getSaves,getTags,getFollowers,getFollowing ,setFollow
 import PostInfo from './PostInfo';
 import UserPosts from './UserPosts';
 import { useNavigate } from 'react-router-dom';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 
 
 function Profile(props) {

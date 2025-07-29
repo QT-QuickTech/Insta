@@ -2,7 +2,7 @@ import React, { useRef, useState, useCallback } from 'react';
 import VideoCropper from './VideoCropper';
 import TagInput from './TagInput';
 import { getUser, cloudUpload ,setPost} from '../service/Api';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 import ImageCropper from './ImageCropper';
 
 function Create() {

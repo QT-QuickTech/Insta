@@ -4,7 +4,7 @@ import { stories as storiesDB } from '../service/DB';
 import { viewStory } from '../service/Api';
 import { getUser } from '../service/Api';
 import StoryModal from './StoryModal';
-import defaultProfilePicture from '../images/Profile.webp'; 
+import defaultProfilePicture from '../images/profile.webp'; 
 import StoryUpload from './StoryUpload';
 import SingleStoryModal from './SingleStoryModal';
 
