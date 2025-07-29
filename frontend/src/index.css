@@ -3,7 +3,37 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* Instagram-specific base styles */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background-color: #fafafa;
+    color: #262626;
+    line-height: 1.5;
+  }
+  
+  /* Instagram scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #dbdbdb;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c7c7c7;
+  }
+}
 
 @layer components {
   .no-scrollbar {
@@ -15,28 +45,154 @@
     display: none;
   }
  
+  /* Instagram-style button */
+  .instagram-btn {
+    @apply bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-200;
+  }
+  
+  .instagram-btn:disabled {
+    @apply bg-blue-300 cursor-not-allowed;
+  }
+  
+  /* Instagram-style input */
+  .instagram-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500;
+  }
+  
+  /* Instagram-style card */
+  .instagram-card {
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm;
+  }
+  
+  /* Instagram-style modal */
+  .instagram-modal {
+    @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+  }
+  
+  .instagram-modal-content {
+    @apply bg-white rounded-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto;
+  }
 
-.my-icon {
-  @apply p-2 m-0.5 mx-2 rounded hover:bg-gray-50 hover:cursor-pointer;
+  .my-icon {
+    @apply p-2 m-0.5 mx-2 rounded hover:bg-gray-50 hover:cursor-pointer;
+  }
+
+  .inside-my-icon {
+    @apply pr-4 text-2xl;
+  }
+
+  /* Center icons in search mode */
+  .my-icon.justify-center .inside-my-icon {
+    @apply pr-0;
+  }
+
+  .story-icon {
+    color: white;
+  }
+  
+  /* Instagram-style gradient text */
+  .instagram-gradient {
+    background: linear-gradient(45deg, #ed4956 0%, #dc2743 25%, #cc2366 50%, #bc1888 75%, #a01774 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Instagram-style like animation */
+  .like-animation {
+    animation: likePulse 0.3s ease-in-out;
+  }
+  
+  @keyframes likePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Red Instagram loading spinner */
+  .loading-spinner-red .spinner {
+    border-top-color: #ed4956;
+  }
+  
+  /* Instagram-style story ring */
+  .story-ring {
+    background: linear-gradient(45deg, #ed4956, #dc2743, #cc2366, #bc1888, #a01774);
+    padding: 2px;
+    border-radius: 50%;
+  }
+  
+  .story-ring.has-story {
+    background: linear-gradient(45deg, #ed4956, #dc2743, #cc2366, #bc1888, #a01774);
+  }
+  
+  .story-ring.no-story {
+    background: #dbdbdb;
+  }
+  
+  /* Instagram-style skeleton loading */
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  @keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Instagram-style hover effects */
+  .instagram-hover {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  
+  .instagram-hover:hover {
+    @apply transform scale-105;
+  }
+  
+  /* Instagram-style text colors */
+  .text-instagram-blue {
+    color: #0095f6;
+  }
+  
+  .text-instagram-red {
+    color: #ed4956;
+  }
+  
+  .text-instagram-gray {
+    color: #8e8e93;
+  }
+  
+  /* Red Instagram icon */
+  .instagram-icon-red {
+    fill: #ed4956;
+    color: #ed4956;
+  }
+  
+  /* Red Instagram icon filter */
+  .instagram-icon-red-filter {
+    filter: hue-rotate(320deg) saturate(150%) brightness(0.8);
+  }
+  
+  /* Instagram-style borders */
+  .border-instagram {
+    border-color: #dbdbdb;
+  }
+  
+  /* Instagram-style shadows */
+  .shadow-instagram {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shadow-instagram-lg {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 }
 
-.inside-my-icon {
-  @apply pr-4 text-2xl;
-}
-
-/* Center icons in search mode */
-.my-icon.justify-center .inside-my-icon {
-  @apply pr-0;
-}
-
-.story-icon {
-  color: white;
-}
-/* .glass {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    } */
-
+/* Glass effect for modals and overlays */
+.glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
