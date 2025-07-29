@@ -1,0 +1,42 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer components {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+ 
+
+.my-icon {
+  @apply p-2 m-0.5 mx-2 rounded hover:bg-gray-50 hover:cursor-pointer;
+}
+
+.inside-my-icon {
+  @apply pr-4 text-2xl;
+}
+
+/* Center icons in search mode */
+.my-icon.justify-center .inside-my-icon {
+  @apply pr-0;
+}
+
+.story-icon {
+  color: white;
+}
+/* .glass {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    } */
+
+}
