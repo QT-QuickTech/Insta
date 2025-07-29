@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import defaultProfilePicture from '../images/Profile.webp';
+import defaultProfilePicture from '../images/profile.webp';
 import defaultVideo from '../images/mockVideo.mp4';
 import defaultImage from '../images/mockImage.jpg';
 import { getViewers } from '../service/Api';
