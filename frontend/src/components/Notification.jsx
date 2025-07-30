@@ -188,7 +188,7 @@ function Notification(props) {
                   <span className="text-sm text-gray-400">{notif.user.username}</span>
                   <br />
                   <span className="text-sm  ">{notif.text}</span>
-                  {notif.type === "comment" && <span className="text-sm"> on your post </span>} 
+                  {notif.type === "comment" && <span className="text-sm"> </span>} 
                   <span className="text-lg mr-3">{getTypeIcon(notif.type)}</span>
                   <div className="text-xs text-gray-400 mt-1">{timeAgo(notif.createdAt)}</div>
                   {notif.type === "request" && (
