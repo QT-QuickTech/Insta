@@ -45,12 +45,14 @@ public class LikeService {
         like.setPost(post);
         like.setUser(user);
         likeRepository.save(like);
-        Notification notification = new Notification();
-        notification.setUser(post.getUser());
-        notification.setByUser(user);
-        notification.setText("Liked your post");
-        notification.setCreatedAt(LocalDateTime.now());
-        notificationRepository.save(notification);
+        if(post.getUser().getUserId() != user.getUserId()){
+            Notification notification = new Notification();
+            notification.setUser(post.getUser());
+            notification.setByUser(user);
+            notification.setText("Liked your post");
+            notification.setCreatedAt(LocalDateTime.now());
+            notificationRepository.save(notification);
+        }
     }
 
     @Transactional

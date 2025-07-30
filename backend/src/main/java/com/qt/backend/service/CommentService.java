@@ -44,12 +44,14 @@ public class CommentService {
         comment.setUser(user);
         comment.setText(commentRequest.getCommentText());
         commentRepository.save(comment);
-        Notification notification = new Notification();
-        notification.setUser(post.getUser());
-        notification.setByUser(user);
-        notification.setText("Commented "+commentRequest.getCommentText());
-        notification.setCreatedAt(LocalDateTime.now());
-        notificationRepository.save(notification);
+        if(post.getUser().getUserId() != user.getUserId()){
+            Notification notification = new Notification();
+            notification.setUser(post.getUser());
+            notification.setByUser(user);
+            notification.setText("Commented "+commentRequest.getCommentText());
+            notification.setCreatedAt(LocalDateTime.now());
+            notificationRepository.save(notification);
+        }
     }
 
 }
