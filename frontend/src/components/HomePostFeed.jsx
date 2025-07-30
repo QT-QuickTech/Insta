@@ -167,11 +167,19 @@ export default function HomePostFeed({ onCloseOverlays }) {
     setLoading(true);
     try {
       const data = await getFeeds(pageNum);
-      if (data.length === 0) {
-        setHasMore(false);
+      if (Array.isArray(data)) {
+        if (data.length === 0) {
+          setHasMore(false);
+        } else {
+          setFeedPosts(prev => [...prev, ...data]);
+        }
       } else {
-        setFeedPosts(prev => [...prev, ...data]);
+        console.error('Expected array but got:', typeof data, data);
+        setHasMore(false);
       }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      setHasMore(false);
     } finally {
       setLoading(false);
       isFetching.current = false;

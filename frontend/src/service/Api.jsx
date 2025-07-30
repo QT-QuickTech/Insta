@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { reelTags, reelLocations, reelData } from '../service/DB';
 // For local testing - change this back to Railway URL after deploying CORS fix
-// const API = 'http://localhost:8080/api/';
-const API = 'https://insta-production-757a.up.railway.app/api/';
+const API = 'http://localhost:8080/api/';
+// const API = 'https://insta-production-757a.up.railway.app/api/';
 
 export let pageFeeds=0;
 export let pageReels=0;
@@ -375,12 +375,16 @@ export const getSuggections=async()=>{
     const suggestions=API+`users/${getUser().userId}/suggestions`;
     console.log('SUGGESTIONS',suggestions);
     try{
-        const response=await fetch(suggestions);       
+        const response=await fetch(suggestions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data=await response.json();
         console.log('suggestions data',data);
         return data;
     }catch(error){
-        return error;
+        console.error('Error fetching suggestions:', error);
+        return [];
     }
 }
 
@@ -474,12 +478,16 @@ export const getFeeds=async(page)=>{
     console.log('FEEDS',FEEDS);
     try{
         const response=await fetch(FEEDS);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data=await response.json();
         console.log('feeds data',data);
         // pageFeeds=page+1;
         return data;
     }catch(error){
-        return error;
+        console.error('Error fetching feeds:', error);
+        return [];
     }
 }    
 export const getReels = async (page) => {
@@ -567,12 +575,16 @@ export const getStories=async()=>{
     const STORIES=API+`stories/${getUser().userId}`;
     console.log('STORIES',STORIES);
     try{
-        const response=await fetch(STORIES);    
+        const response=await fetch(STORIES);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data=await response.json();
         console.log('stories data',data);
         return data;
     }catch(error){
-        return error;
+        console.error('Error fetching stories:', error);
+        return [];
     }
 };
 
