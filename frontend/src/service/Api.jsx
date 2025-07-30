@@ -213,7 +213,7 @@ export const login=async(userId,password)=>{
         });
         
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`Invalid username or password`);
         }
         
         const data=await response.json();
