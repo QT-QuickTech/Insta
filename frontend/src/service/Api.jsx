@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { reelTags, reelLocations, reelData } from '../service/DB';
 // For local testing - change this back to Railway URL after deploying CORS fix
-// const API = 'http://localhost:8080/api/';
-const API = 'https://insta-production-757a.up.railway.app/api/';
+const API = 'http://localhost:8080/api/';
+// const API = 'https://insta-production-757a.up.railway.app/api/';
 
 export let pageFeeds=0;
 export let pageReels=0;
@@ -39,6 +39,18 @@ export  const setLoggedInUser=async()=>{
         const data=await response.json();
         console.log('user data',data);
         setUser(data);
+        return data;
+    }catch(error){  
+        console.log('error',error);
+    }
+}
+export  const getUserDetails=async(userId)=>{
+    const USER=API+`users/${userId}?loggedInUserId=${getUser().userId}`;
+    console.log('USER',USER);
+    try{
+        const response=await fetch(USER);
+        const data=await response.json();
+        console.log('user data',data);
         return data;
     }catch(error){  
         console.log('error',error);

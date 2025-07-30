@@ -37,17 +37,17 @@ public class SaveService {
             post.setLikes(likeRepository.findCountOfLikeByPostId(post.getPostId()));
             post.setComments(commentRepository.findCountOfCommentByPostId(post.getPostId()));
             post.setIsLiked(likeRepository.findAnyLikeByPostIdAndUserId(post.getPostId(), userId));
-            post.setIsSaved(saveRepository.findAnySaveByPostIdAndUserId(post.getPostId(), userId));
-            post.getUser().setIsFollowed(
-                    followsRepository.findAnyFollowByUserIdAndFollowingId(userId, post.getUser().getUserId()));
-            post.getUser().setPosts(postRepository.countPostsByUserId(post.getUser().getUserId()));
-            post.getUser().setFollowers(followsRepository.countFollowersByUserId(post.getUser().getUserId()));
-            post.getUser().setFollowing(followsRepository.countFollowingByUserId(post.getUser().getUserId()));
-            if(!post.getUser().isFollowed() && post.getUser().isPrivate()){
-                post.getUser().setIsRequested(requestRepository.findByUserAndByUser(post.getUser().getUserId(), userId).isPresent());
-            }else{
-                post.getUser().setIsRequested(false);
-            }
+            post.setIsSaved(true);
+            // post.getUser().setIsFollowed(
+                    // followsRepository.findAnyFollowByUserIdAndFollowingId(userId, post.getUser().getUserId()));
+            // post.getUser().setPosts(postRepository.countPostsByUserId(post.getUser().getUserId()));
+            // post.getUser().setFollowers(followsRepository.countFollowersByUserId(post.getUser().getUserId()));
+            // post.getUser().setFollowing(followsRepository.countFollowingByUserId(post.getUser().getUserId()));
+            // if(!post.getUser().isFollowed() && post.getUser().isPrivate()){
+            //     post.getUser().setIsRequested(requestRepository.findByUserAndByUser(post.getUser().getUserId(), userId).isPresent());
+            // }else{
+            //     post.getUser().setIsRequested(false);
+            // }
         }
         return posts;
     }

@@ -35,15 +35,15 @@ public class TagService {
             post.setIsSaved(saveRepository.findAnySaveByPostIdAndUserId(post.getPostId(), userId));
             post.setLikes(likeRepository.findCountOfLikeByPostId(post.getPostId()));
             post.setComments(commentRepository.findCountOfCommentByPostId(post.getPostId()));
-            post.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, post.getUser().getUserId()));
-            post.getUser().setPosts(postRepository.countPostsByUserId(post.getUser().getUserId()));
-            post.getUser().setFollowers(followsRepository.countFollowersByUserId(post.getUser().getUserId()));
-            post.getUser().setFollowing(followsRepository.countFollowingByUserId(post.getUser().getUserId()));
-            if(!post.getUser().isFollowed() && post.getUser().isPrivate()){
-                post.getUser().setIsRequested(requestRepository.findByUserAndByUser(post.getUser().getUserId(), userId).isPresent());
-            }else{
-                post.getUser().setIsRequested(false);
-            }
+            // post.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, post.getUser().getUserId()));
+            // post.getUser().setPosts(postRepository.countPostsByUserId(post.getUser().getUserId()));
+            // post.getUser().setFollowers(followsRepository.countFollowersByUserId(post.getUser().getUserId()));
+            // post.getUser().setFollowing(followsRepository.countFollowingByUserId(post.getUser().getUserId()));
+            // if(!post.getUser().isFollowed() && post.getUser().isPrivate()){
+            //     post.getUser().setIsRequested(requestRepository.findByUserAndByUser(post.getUser().getUserId(), userId).isPresent());
+            // }else{
+            //     post.getUser().setIsRequested(false);
+            // }
         }
         return posts;
     }

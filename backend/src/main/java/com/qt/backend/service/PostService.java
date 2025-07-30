@@ -57,9 +57,9 @@ public class PostService {
                 post.setIsLiked(likeRepository.findAnyLikeByPostIdAndUserId(post.getPostId(), loggedInUserId));
                 post.setIsSaved(saveRepository.findAnySaveByPostIdAndUserId(post.getPostId(), loggedInUserId));
                 post.getUser().setIsFollowed(isFollowed);
-                post.getUser().setPosts(postRepository.countPostsByUserId(post.getUser().getUserId()));
-                post.getUser().setFollowers(followsRepository.countFollowersByUserId(post.getUser().getUserId()));
-                post.getUser().setFollowing(followsRepository.countFollowingByUserId(post.getUser().getUserId()));
+                // post.getUser().setPosts(postRepository.countPostsByUserId(post.getUser().getUserId()));
+                // post.getUser().setFollowers(followsRepository.countFollowersByUserId(post.getUser().getUserId()));
+                // post.getUser().setFollowing(followsRepository.countFollowingByUserId(post.getUser().getUserId()));
                 if(!post.getUser().isFollowed() && post.getUser().isPrivate()){
                     post.getUser().setIsRequested(requestRepository.findByUserAndByUser(post.getUser().getUserId(), loggedInUserId).isPresent());
                 }else{
@@ -79,15 +79,15 @@ public class PostService {
                 feed.setComments(commentRepository.findCountOfCommentByPostId(feed.getPostId()));
                 feed.setIsSaved(saveRepository.findAnySaveByPostIdAndUserId(feed.getPostId(), userId));
                 feed.setIsLiked(false);
-                feed.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, feed.getUser().getUserId()));
-                feed.getUser().setPosts(postRepository.countPostsByUserId(feed.getUser().getUserId()));
-                feed.getUser().setFollowers(followsRepository.countFollowersByUserId(feed.getUser().getUserId()));
-                feed.getUser().setFollowing(followsRepository.countFollowingByUserId(feed.getUser().getUserId()));
-                if(!feed.getUser().isFollowed() && feed.getUser().isPrivate()){
-                    feed.getUser().setIsRequested(requestRepository.findByUserAndByUser(feed.getUser().getUserId(), userId).isPresent());
-                }else{
-                    feed.getUser().setIsRequested(false);
-                }
+                // feed.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, feed.getUser().getUserId()));
+                // feed.getUser().setPosts(postRepository.countPostsByUserId(feed.getUser().getUserId()));
+                // feed.getUser().setFollowers(followsRepository.countFollowersByUserId(feed.getUser().getUserId()));
+                // feed.getUser().setFollowing(followsRepository.countFollowingByUserId(feed.getUser().getUserId()));
+                // if(!feed.getUser().isFollowed() && feed.getUser().isPrivate()){
+                //     feed.getUser().setIsRequested(requestRepository.findByUserAndByUser(feed.getUser().getUserId(), userId).isPresent());
+                // }else{
+                //     feed.getUser().setIsRequested(false);
+                // }
             }
             return feeds;
         
@@ -104,9 +104,9 @@ public class PostService {
                 reel.setIsLiked(false);
                 reel.setIsSaved(saveRepository.findAnySaveByPostIdAndUserId(reel.getPostId(), userId));
                 reel.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, reel.getUser().getUserId()));
-                reel.getUser().setPosts(postRepository.countPostsByUserId(reel.getUser().getUserId()));
-                reel.getUser().setFollowers(followsRepository.countFollowersByUserId(reel.getUser().getUserId()));
-                reel.getUser().setFollowing(followsRepository.countFollowingByUserId(reel.getUser().getUserId()));
+                // reel.getUser().setPosts(postRepository.countPostsByUserId(reel.getUser().getUserId()));
+                // reel.getUser().setFollowers(followsRepository.countFollowersByUserId(reel.getUser().getUserId()));
+                // reel.getUser().setFollowing(followsRepository.countFollowingByUserId(reel.getUser().getUserId()));
                 if(!reel.getUser().isFollowed() && reel.getUser().isPrivate()){
                     reel.getUser().setIsRequested(requestRepository.findByUserAndByUser(reel.getUser().getUserId(), userId).isPresent());
                 }else{
@@ -125,15 +125,15 @@ public class PostService {
         post.setComments(commentRepository.findCountOfCommentByPostId(postId));
         post.setIsLiked(likeRepository.findAnyLikeByPostIdAndUserId(postId, userId));
         post.setIsSaved(saveRepository.findAnySaveByPostIdAndUserId(postId, userId));
-        post.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, post.getUser().getUserId()));
-        post.getUser().setPosts(postRepository.countPostsByUserId(post.getUser().getUserId()));
-        post.getUser().setFollowers(followsRepository.countFollowersByUserId(post.getUser().getUserId()));
-        post.getUser().setFollowing(followsRepository.countFollowingByUserId(post.getUser().getUserId()));
-        if(!post.getUser().isFollowed() && post.getUser().isPrivate()){
-            post.getUser().setIsRequested(requestRepository.findByUserAndByUser(post.getUser().getUserId(), userId).isPresent());
-        }else{
-            post.getUser().setIsRequested(false);
-        }
+        // post.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, post.getUser().getUserId()));
+        // post.getUser().setPosts(postRepository.countPostsByUserId(post.getUser().getUserId()));
+        // post.getUser().setFollowers(followsRepository.countFollowersByUserId(post.getUser().getUserId()));
+        // post.getUser().setFollowing(followsRepository.countFollowingByUserId(post.getUser().getUserId()));
+        // if(!post.getUser().isFollowed() && post.getUser().isPrivate()){
+        //     post.getUser().setIsRequested(requestRepository.findByUserAndByUser(post.getUser().getUserId(), userId).isPresent());
+        // }else{
+        //     post.getUser().setIsRequested(false);
+        // }
         return post;
     }
 

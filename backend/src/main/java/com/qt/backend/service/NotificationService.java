@@ -31,15 +31,15 @@ public class NotificationService {
         Page<NotificationDto> notifications = notificationRepository.findByUser(userId, pageable);
         notifications.forEach(notificationDto -> {
             notificationDto.setType(checkType(notificationDto.getText()));
-            notificationDto.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, notificationDto.getUser().getUserId()));
-            notificationDto.getUser().setPosts(postRepository.countPostsByUserId(notificationDto.getUser().getUserId()));
-            notificationDto.getUser().setFollowers(followsRepository.countFollowersByUserId(notificationDto.getUser().getUserId()));
-            notificationDto.getUser().setFollowing(followsRepository.countFollowingByUserId(notificationDto.getUser().getUserId()));
-            if(!notificationDto.getUser().isFollowed() && notificationDto.getUser().isPrivate()){
-                notificationDto.getUser().setIsRequested(requestRepository.findByUserAndByUser(notificationDto.getUser().getUserId(), userId).isPresent());
-            }else{
-                notificationDto.getUser().setIsRequested(false);
-            }
+            // notificationDto.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, notificationDto.getUser().getUserId()));
+            // notificationDto.getUser().setPosts(postRepository.countPostsByUserId(notificationDto.getUser().getUserId()));
+            // notificationDto.getUser().setFollowers(followsRepository.countFollowersByUserId(notificationDto.getUser().getUserId()));
+            // notificationDto.getUser().setFollowing(followsRepository.countFollowingByUserId(notificationDto.getUser().getUserId()));
+            // if(!notificationDto.getUser().isFollowed() && notificationDto.getUser().isPrivate()){
+            //     notificationDto.getUser().setIsRequested(requestRepository.findByUserAndByUser(notificationDto.getUser().getUserId(), userId).isPresent());
+            // }else{
+            //     notificationDto.getUser().setIsRequested(false);
+            // }
         });
         return notifications;
     }

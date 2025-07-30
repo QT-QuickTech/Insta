@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { getUser ,getPosts,getSaves,getTags,getFollowers,getFollowing ,setFollow,setUnfollow,removeFollower,setLoggedInUser ,sentRequest,cancelRequest} from '../service/Api';
+import { getUser ,getPosts,getSaves,getTags,getFollowers,getFollowing ,setFollow,setUnfollow,removeFollower,setLoggedInUser ,sentRequest,cancelRequest ,getUserDetails} from '../service/Api';
 import PostInfo from './PostInfo';
 import UserPosts from './UserPosts';
 import { useNavigate } from 'react-router-dom';
@@ -53,6 +53,9 @@ function Profile(props) {
     let foundUser = location.state?.user;
     setUser(foundUser);
     setLoading(true);
+    setLoadingSaved(true);
+    setLoadingTagged(true);
+    setLoadingFollowers(true);
     setLoadingPosts(true);
     if (!foundUser) return;
     const fetchUserId = foundUser.userId || userId;
@@ -73,6 +76,14 @@ function Profile(props) {
     if(ownProfile){
       setLoggedInUser().then(() => {
         setUser(getUser());
+        setLoading(false);
+      }).catch(error => {
+        console.error('Error updating user data:', error);
+      });
+    }else{
+      getUserDetails(fetchUserId).then(data => {
+        setUser(data);
+        setLoading(false);
       }).catch(error => {
         console.error('Error updating user data:', error);
       });
@@ -90,6 +101,9 @@ function Profile(props) {
         setLoading(false);
         handlePosts([]); // Call handlePosts with empty
       });
+    
+      getSaves().then(data => { setSavedPosts(data); setLoadingSaved(false); }).catch(() => { setSavedPosts([]); setLoadingSaved(false); });
+      getTags(fetchUserId).then(data => { setTaggedPosts(data); setLoadingTagged(false); }).catch(() => { setTaggedPosts([]); setLoadingTagged(false); });
     }else{
       setUserPosts([]);
       setLoadingPosts(false);
@@ -105,13 +119,11 @@ function Profile(props) {
       setTaggedPosts([]);
       setLoadingSaved(false);
       setLoadingTagged(false);
-      setLoading(false);
+      
       return;
     }
-    setLoadingSaved(true);
-    setLoadingTagged(true);
-    getSaves().then(data => { setSavedPosts(data); setLoadingSaved(false); }).catch(() => { setSavedPosts([]); setLoadingSaved(false); });
-    getTags(user.userId).then(data => { setTaggedPosts(data); setLoadingTagged(false); }).catch(() => { setTaggedPosts([]); setLoadingTagged(false); });
+   
+   
   }, [userPosts]);
 
   // Update handlers to accept optional data
@@ -127,13 +139,13 @@ function Profile(props) {
   };
   const handleSaved = () => {
     setSelectedTab('saved');
-    setLoadingSaved(true);
-    getSaves().then(data => { setSavedPosts(data); setLoadingSaved(false); }).catch(() => { setSavedPosts([]); setLoadingSaved(false); });
+    // setLoadingSaved(true);
+    // getSaves().then(data => { setSavedPosts(data); setLoadingSaved(false); }).catch(() => { setSavedPosts([]); setLoadingSaved(false); });
   };
   const handleTag = () => {
     setSelectedTab('tagged');
-    setLoadingTagged(true);
-    getTags(user.userId).then(data => { setTaggedPosts(data); setLoadingTagged(false); }).catch(() => { setTaggedPosts([]); setLoadingTagged(false); });
+    // setLoadingTagged(true);
+    // getTags(user.userId).then(data => { setTaggedPosts(data); setLoadingTagged(false); }).catch(() => { setTaggedPosts([]); setLoadingTagged(false); });
   };
 
   // Re-add handleFollow function
@@ -298,51 +310,75 @@ function Profile(props) {
       )}
       <div className="max-w-full p-6 font-sans">
         {/* Profile Header */}
-        <div className="max-w-3xl flex items-center gap-12 mb-8 mx-auto">
-          <img src={user.profilePicture} className="w-44 h-44 rounded-full object-cover border" alt={user.userId} onError={e => e.target.src = defaultProfilePicture} />
-          <div className="flex-1">
-            <div className="flex items-center mb-4">
-              <span className="text-2xl font-light">{user.userName}</span>
-              <div className="font-semibold  ">{user.userId}</div>
-              {!isOwnProfile && (
-                <button
-                  className={`px-4 py-1 ml-4 rounded text-sm border font-semibold transition-colors duration-150 ${
-                    requested
-                      ? 'bg-transparent text-gray-500 border-gray-300'
-                      : followed
-                        ? 'bg-transparent text-gray-500 border-gray-300'
-                        : 'bg-transparent text-blue-400 border-gray-300'
-                  }`}
-                  onClick={handleFollow}
-                >
-                  {requested
-                    ? 'Requested'
-                    : followed
-                      ? 'Following'
-                      : 'Follow'}
-                </button>
-              )}
-              {isOwnProfile && (
-                <button className="px-4 py-1 ml-4 rounded text-sm border font-semibold">Edit Profile</button>
-              )}
-            </div>
-            <div className="flex gap-8 mb-2">
-              <span><b>{user.posts}</b> posts</span>
-              <span style={{cursor: 'pointer'}} onClick={() => { if (user && !isNoFollowPrivateProfile) { setShowFollowModal(true); setFollowTab('followers'); } }}><b>{user.followers}</b> followers</span>
-              <span style={{cursor: 'pointer'}} onClick={() => { if (user && !isNoFollowPrivateProfile) { setShowFollowModal(true); setFollowTab('following'); } }}><b>{user.following}</b> following</span>
-            </div>
-          
+        {loading ? (
+          // Skeleton loader for profile header
+          <div className="max-w-3xl flex items-center gap-12 mb-8 mx-auto">
+            <div className="w-44 h-44 rounded-full bg-gray-200 animate-pulse border"></div>
+            <div className="flex-1">
+              <div className="flex items-center mb-4">
+                <div className="h-8 bg-gray-200 rounded w-32 animate-pulse mr-4"></div>
+                <div className="h-6 bg-gray-200 rounded w-24 animate-pulse"></div>
+                <div className="h-8 bg-gray-200 rounded w-20 animate-pulse ml-4"></div>
+              </div>
+              <div className="flex gap-8 mb-2">
+                <div className="h-4 bg-gray-200 rounded w-16 animate-pulse"></div>
+                <div className="h-4 bg-gray-200 rounded w-20 animate-pulse"></div>
+                <div className="h-4 bg-gray-200 rounded w-20 animate-pulse"></div>
+              </div>
               <div className="text-sm">
-                <div className="font-semibold">{user.username}</div>
-                <div>@{user.userId}</div>
-                {!isNoFollowPrivateProfile && <div>{user.bio}</div>}
-                {/* {user.website && (
-                  <a href={user.websiteUrl} className="text-blue-500 hover:underline block" target="_blank" rel="noopener noreferrer">{user.websiteUrl}</a>
-                )} */}
+                <div className="h-4 bg-gray-200 rounded w-24 animate-pulse mb-1"></div>
+                <div className="h-3 bg-gray-200 rounded w-20 animate-pulse mb-1"></div>
+                <div className="h-3 bg-gray-200 rounded w-32 animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="max-w-3xl flex items-center gap-12 mb-8 mx-auto">
+            <img src={user.profilePicture} className="w-44 h-44 rounded-full object-cover border" alt={user.userId} onError={e => e.target.src = defaultProfilePicture} />
+            <div className="flex-1">
+              <div className="flex items-center mb-4">
+                <span className="text-2xl font-light">{user.userName}</span>
+                <div className="font-semibold  ">{user.userId}</div>
+                {!isOwnProfile && (
+                  <button
+                    className={`px-4 py-1 ml-4 rounded text-sm border font-semibold transition-colors duration-150 ${
+                      requested
+                        ? 'bg-transparent text-gray-500 border-gray-300'
+                        : followed
+                          ? 'bg-transparent text-gray-500 border-gray-300'
+                          : 'bg-transparent text-blue-400 border-gray-300'
+                    }`}
+                    onClick={handleFollow}
+                  >
+                    {requested
+                      ? 'Requested'
+                      : followed
+                        ? 'Following'
+                        : 'Follow'}
+                  </button>
+                )}
+                {isOwnProfile && (
+                  <button className="px-4 py-1 ml-4 rounded text-sm border font-semibold">Edit Profile</button>
+                )}
+              </div>
+              <div className="flex gap-8 mb-2">
+                <span><b>{user.posts}</b> posts</span>
+                <span style={{cursor: 'pointer'}} onClick={() => { if (user && !isNoFollowPrivateProfile) { setShowFollowModal(true); setFollowTab('followers'); } }}><b>{user.followers}</b> followers</span>
+                <span style={{cursor: 'pointer'}} onClick={() => { if (user && !isNoFollowPrivateProfile) { setShowFollowModal(true); setFollowTab('following'); } }}><b>{user.following}</b> following</span>
               </div>
             
+                <div className="text-sm">
+                  <div className="font-semibold">{user.username}</div>
+                  <div>@{user.userId}</div>
+                  {!isNoFollowPrivateProfile && <div>{user.bio}</div>}
+                  {/* {user.website && (
+                    <a href={user.websiteUrl} className="text-blue-500 hover:underline block" target="_blank" rel="noopener noreferrer">{user.websiteUrl}</a>
+                  )} */}
+                </div>
+              
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Tabs */}
         <div className="border-t border-b  space-x-12 text-sm font-semibold mb-4 flex justify-around">

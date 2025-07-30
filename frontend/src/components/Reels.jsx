@@ -234,7 +234,7 @@ export default function Reels() {
   const [followRequests, setFollowRequests] = useState({});
   const didFetch = useRef(false); // Prevent double-fetch
   const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const isFetching = useRef(false);
   // Debounce ref for wheel event
@@ -252,17 +252,23 @@ export default function Reels() {
     setLoading(true);
     try {
       const data = await getReels(pageNum);
-      if (!data || data.length === 0) {
-        setHasMore(false);
+      if (Array.isArray(data)) {
+        if (data.length === 0) {
+          setHasMore(false);
+        } else {
+          const reeldatas = data.map(reel => ({
+            ...reel,
+            tag: reelTags[Math.floor(Math.random() * reelTags.length)],
+            location: reelLocations[Math.floor(Math.random() * reelLocations.length)],
+          }));
+          setReels(prev => [...prev, ...reeldatas]);
+        }
       } else {
-        const reeldatas = data.map(reel => ({
-          ...reel,
-          tag: reelTags[Math.floor(Math.random() * reelTags.length)],
-          location: reelLocations[Math.floor(Math.random() * reelLocations.length)],
-        }));
-        setReels(prev => [...prev, ...reeldatas]);
+        console.error('Expected array but got:', typeof data, data);
+        setHasMore(false);
       }
-    } catch {
+    } catch (error) {
+      console.error('Error fetching reels:', error);
       // fallback to static data if needed
       if (reels.length === 0) {
         setReels(
@@ -273,6 +279,7 @@ export default function Reels() {
           }))
         );
       }
+      setHasMore(false);
     } finally {
       setLoading(false);
       isFetching.current = false;
@@ -447,32 +454,68 @@ export default function Reels() {
       style={{ scrollBehavior: 'smooth' }}
       {...handlers}
     >
-      {reels.map((reel, index) => (
-        <div
-          key={reel.id || index}
-          data-index={index}
-          ref={el => snapRefs.current[index] = el}
-          className="reel-snap w-full h-[calc(100vh-64px)] flex items-center justify-center bg-white  border-white rounded-xl"
-          style={{ margin: 0, padding: 0 }}
-        >
-          <ReelInfo
-            reel={reel}
-            onUserClick={handleUserClick}
-            onCommentClick={setSelectedReel}
-            handleFollow={handleFollow}
-            muted={muted}
-            toggleMute={toggleMute}
-            isPlaying={isPlaying}
-            videoRef={el => (videoRefs.current[index] = el)}
-            togglePlay={togglePlay}
-          />
-        </div>
-      ))}
-      {loading && (
+      {/* Show skeleton loader only for first page (page 0) */}
+      {loading && page === 0 ? (
+        Array.from({ length: 3 }).map((_, idx) => (
+          <div
+            key={`reel-skeleton-${idx}`}
+            className="w-full h-[calc(100vh-64px)] flex items-center justify-center bg-white border-white rounded-xl"
+            style={{ margin: 0, padding: 0 }}
+          >
+            <div className="flex items-center justify-center h-full bg-white">
+              <div className="relative overflow-hidden cursor-pointer w-[300px] h-[calc(100vh-64px)] flex items-center justify-center bg-gray-200 rounded-xl border-2 border-gray-300 animate-pulse">
+                <div className="w-full h-full bg-gray-300 rounded-lg"></div>
+              </div>
+              <div className="flex flex-col items-center gap-6 ml-6 text-gray-700 h-full justify-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+                  <div className="w-8 h-4 bg-gray-300 rounded mt-1 animate-pulse"></div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+                  <div className="w-8 h-4 bg-gray-300 rounded mt-1 animate-pulse"></div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        reels.map((reel, index) => (
+          <div
+            key={reel.id || index}
+            data-index={index}
+            ref={el => snapRefs.current[index] = el}
+            className="reel-snap w-full h-[calc(100vh-64px)] flex items-center justify-center bg-white  border-white rounded-xl"
+            style={{ margin: 0, padding: 0 }}
+          >
+            <ReelInfo
+              reel={reel}
+              onUserClick={handleUserClick}
+              onCommentClick={setSelectedReel}
+              handleFollow={handleFollow}
+              muted={muted}
+              toggleMute={toggleMute}
+              isPlaying={isPlaying}
+              videoRef={el => (videoRefs.current[index] = el)}
+              togglePlay={togglePlay}
+            />
+          </div>
+        ))
+      )}
+      
+      {/* Show round spinner for subsequent pages */}
+      {loading && page > 0 && (
         <div className="flex justify-center py-4">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
+      
       {!hasMore && <div className="text-center py-4 text-gray-400">No more reels</div>}
       {selectedReel && (
         <PostInfo post={selectedReel} onClose={() => setSelectedReel(null)} />

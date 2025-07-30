@@ -33,11 +33,19 @@ export default function Explore() {
     setLoading(true);
     try {
       const data = await getFeeds(pageNum);
-      if (data.length === 0) {
-        setHasMore(false);
+      if (Array.isArray(data)) {
+        if (data.length === 0) {
+          setHasMore(false);
+        } else {
+          setPostChunks(prev => [...prev, ...chunkArray(data, 5)]);
+        }
       } else {
-        setPostChunks(prev => [...prev, ...chunkArray(data, 5)]);
+        console.error('Expected array but got:', typeof data, data);
+        setHasMore(false);
       }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      setHasMore(false);
     } finally {
       setLoading(false);
       isFetching.current = false;
@@ -115,7 +123,8 @@ export default function Explore() {
       />
     )}
     <div className="p-4">
-      {loading ? (
+      {/* Show skeleton loader only for first page (page 0) */}
+      {loading && page === 0 ? (
         Array.from({ length: 2 }).map((_, rowIdx) => (
           <div
             key={`explore-loader-row-${rowIdx}`}
@@ -172,11 +181,14 @@ export default function Explore() {
           </div>
         ))
       )}
-      {loading && (
+      
+      {/* Show round spinner for subsequent pages */}
+      {loading && page > 0 && (
         <div className="flex justify-center py-4">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
+      
       {!hasMore && <div className="text-center py-4 text-gray-400">No more posts</div>}
     </div>
   </>);

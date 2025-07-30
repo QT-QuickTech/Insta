@@ -146,7 +146,7 @@ export default function RightSidebar() {
               </div>
             ))
           ) : (
-            suggestedUsers.slice(0, showAll ? suggestedUsers.length : 6).map((u) => (
+            suggestedUsers.slice(0, showAll ? suggestedUsers.length : 5).map((u) => (
               <SuggestionUser key={u.userId} user={u} loggedUser={user} onUserClick={handleUserClick} />
             ))
           )}

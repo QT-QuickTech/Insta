@@ -54,7 +54,7 @@ function UserPosts({ posts: initialPosts, setSelectedPost, setShowPostInfo, isOw
         )}
         {posts.slice().reverse().map((post, i) => (
           <div
-            key={post.postId || i}
+            key={ i}
             className="aspect-square bg-gray-100 flex flex-col items-center justify-center overflow-hidden relative group cursor-pointer"
             onClick={e => {
               // If menu is open, just close it and do nothing else (for any post)

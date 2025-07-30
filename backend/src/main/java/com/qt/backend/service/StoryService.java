@@ -64,17 +64,17 @@ public class StoryService {
     public List<UserDto> getStoryViewers(Long storyId, String loggedInUserId) {
         Story story = storyRepository.findById(storyId).orElseThrow(() -> new RuntimeException("Story not found"));
         List<UserDto> storyViews = storyViewRepository.findByStory(story);
-        for(UserDto user : storyViews) {
-            user.setIsFollowed(followsService.isFollowing(loggedInUserId, user.getUserId()));
-            user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
-            user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
-            user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
-            if(!user.isFollowed() && user.isPrivate()){
-                user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), loggedInUserId).isPresent());
-            }else{
-                user.setIsRequested(false);
-            }
-        }
+        // for(UserDto user : storyViews) {
+        //     user.setIsFollowed(followsService.isFollowing(loggedInUserId, user.getUserId()));
+        //     // user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
+        //     // user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
+        //     // user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
+        //     if(!user.isFollowed() && user.isPrivate()){
+        //         user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), loggedInUserId).isPresent());
+        //     }else{
+        //         user.setIsRequested(false);
+        //     }
+        // }
         return storyViews;
     }
 }

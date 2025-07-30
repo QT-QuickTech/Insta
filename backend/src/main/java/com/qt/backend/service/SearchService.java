@@ -28,9 +28,9 @@ public class SearchService {
         List<UserDto> users = searchRepository.searchPosts(query, PageRequest.of(0, 5),userId);
         for (UserDto user : users) {
             user.setIsFollowed(followsService.isFollowing(userId, user.getUserId()));
-            user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
-            user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
-            user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
+            // user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
+            // user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
+            // user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
             if(!user.isFollowed() && user.isPrivate()){
                 user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), userId).isPresent());
             }else{

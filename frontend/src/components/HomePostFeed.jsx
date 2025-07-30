@@ -217,7 +217,8 @@ export default function HomePostFeed({ onCloseOverlays }) {
 
   return (
     <div className="flex flex-col gap-8 w-full mt-6">
-      {loading ? (
+      {/* Show skeleton loader only for first page (page 0) */}
+      {loading && page === 0 ? (
         Array.from({ length: 4 }).map((_, idx) => (
           <div key={`loading-post-${idx}`} className="bg-white px-4 md:px-10 py-6 rounded-lg animate-pulse">
             <div className="flex items-center mb-4">
@@ -246,11 +247,14 @@ export default function HomePostFeed({ onCloseOverlays }) {
           />
         ))
       )}
-      {loading && (
+      
+      {/* Show round spinner for subsequent pages */}
+      {loading && page > 0 && (
         <div className="flex justify-center py-4">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
+      
       {!hasMore && <div className="text-center py-4 text-gray-400">No more posts</div>}
       {selectedPost && (
         <PostInfo post={selectedPost} onClose={() => setSelectedPost(null)} />

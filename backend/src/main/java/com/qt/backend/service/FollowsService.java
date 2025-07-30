@@ -29,9 +29,9 @@ public class FollowsService {
         List<UserDto> users = followsRepository.findFollowersByUserId(userId);
         for (UserDto user : users) {
             user.setIsFollowed(isFollowing(loggedInUserId, user.getUserId()));
-            user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
-            user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
-            user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
+            // user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
+            // user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
+            // user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
             if(!user.isFollowed() && user.isPrivate()){
                 user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), userId).isPresent());
             }else{
@@ -45,8 +45,8 @@ public class FollowsService {
         List<UserDto> users = followsRepository.findFollowingByUserId(userId);
         for (UserDto user : users) {
             user.setIsFollowed(isFollowing(loggedInUserId, user.getUserId()));
-            user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
-            user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
+            // user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
+            // user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
             if(!user.isFollowed() && user.isPrivate()){
                 user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), userId).isPresent());
             }else{

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qt.backend.dto.UserDto;
@@ -26,9 +27,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getUser(@PathVariable String userId) {
+    public ResponseEntity<?> getUser(@PathVariable String userId, @RequestParam(required = false) String loggedInUserId) {
         try {
-            UserDto user = userService.getUserById(userId);
+            UserDto user = userService.getUserById(userId, loggedInUserId);
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(java.util.Map.of("error", e.getMessage()));
