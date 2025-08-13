@@ -37,7 +37,6 @@ public class LikeService {
         User user = userRepository.findByUserId(userId);
         if (user == null)
             throw new RuntimeException("User not found");
-        // Optionally, check if already liked
         if (likeRepository.findAnyLikeByPostIdAndUserId(postId, userId)) {
             throw new RuntimeException("User already liked this post");
         }

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FollowsService {
     private final FollowsRepository followsRepository;
-    private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final NotificationRepository  notificationRepository;
     private final RequestRepository requestRepository;
@@ -29,9 +28,6 @@ public class FollowsService {
         List<UserDto> users = followsRepository.findFollowersByUserId(userId);
         for (UserDto user : users) {
             user.setIsFollowed(isFollowing(loggedInUserId, user.getUserId()));
-            // user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
-            // user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
-            // user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
             if(!user.isFollowed() && user.isPrivate()){
                 user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), userId).isPresent());
             }else{
@@ -45,8 +41,6 @@ public class FollowsService {
         List<UserDto> users = followsRepository.findFollowingByUserId(userId);
         for (UserDto user : users) {
             user.setIsFollowed(isFollowing(loggedInUserId, user.getUserId()));
-            // user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
-            // user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
             if(!user.isFollowed() && user.isPrivate()){
                 user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), userId).isPresent());
             }else{

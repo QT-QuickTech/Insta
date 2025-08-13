@@ -25,16 +25,6 @@ public class PostController {
 
     private final PostService postService;
 
-    // Example for a single post
-    // @GetMapping("/{postId}/user/{userId}")
-    // public ResponseEntity<PostDto> getPostByIdAndUserId(@PathVariable Long
-    // postId, @PathVariable Long userId) {
-    // PostDto post = postService.getPostByIdAndUserId(postId, userId);
-    // if (post == null) {
-    // return ResponseEntity.notFound().build();
-    // }
-    // return ResponseEntity.ok(post);
-    // }
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getPostsByUserId(@PathVariable String userId, @RequestParam String loggedInUserId) {
@@ -47,15 +37,6 @@ public class PostController {
     }
 
 
-    // @GetMapping("/{userId}/{postId}")
-    // public ResponseEntity<?> getPostByIdAndUserId(@PathVariable String userId, @PathVariable Long postId) {
-    //     try {
-    //         PostDto post = postService.getPostById(postId, userId);
-    //         return ResponseEntity.ok(post);
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(500).body(e.getMessage());
-    //     }
-    // }
 
 
     @GetMapping("/feeds/{userId}")

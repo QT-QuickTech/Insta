@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { reelTags, reelLocations, reelData } from '../service/DB';
 // For local testing - change this back to Railway URL after deploying CORS fix
-// const API = 'http://localhost:8080/api/';
-const API = 'https://insta-production-757a.up.railway.app/api/';
+const API = 'http://localhost:8080/api/';
+// const API = 'https://insta-production-5fed.up.railway.app/api/';
 
 export let pageFeeds=0;
 export let pageReels=0;

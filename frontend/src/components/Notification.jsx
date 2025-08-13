@@ -79,7 +79,9 @@ function Notification(props) {
       return () => container.removeEventListener('scroll', handleScroll);
     }, [loading, hasMore, currentPage]);
 
+
   const handleUserClick = (userId, user) => {
+
     if (window.location.pathname === `/user/${userId}`) {
       navigate('/', { replace: true });
       setTimeout(() => {

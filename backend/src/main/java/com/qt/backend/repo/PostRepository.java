@@ -14,10 +14,6 @@ import com.qt.backend.model.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-        // @Query("SELECT new com.qt.backend.dto.PostDto(p.postId, p.mediaUrl, p.mediaType, p.caption, p.createdAt, p.user.userId, p.user.profilePicture, p.user.username) "
-        //                 +
-        //                 "FROM Post p WHERE p.postId = :postId")
-        // PostDto findPostDtoById(@Param("postId") Long postId);
 
         @Query("SELECT new com.qt.backend.dto.PostDto(p.postId, p.mediaUrl, p.mediaType, p.caption, p.createdAt, p.user.userId, p.user.profilePicture, p.user.username, p.user.bio, p.user.isPrivate) "
                         +

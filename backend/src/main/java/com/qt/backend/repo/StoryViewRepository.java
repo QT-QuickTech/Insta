@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.time.LocalDateTime;
 import com.qt.backend.dto.UserDto;
 import com.qt.backend.model.Story;
 import com.qt.backend.model.StoryView;

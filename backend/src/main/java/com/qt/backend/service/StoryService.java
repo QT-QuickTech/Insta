@@ -1,6 +1,5 @@
 package com.qt.backend.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +10,7 @@ import com.qt.backend.model.Story;
 import com.qt.backend.model.StoryView;
 import com.qt.backend.model.User;
 import com.qt.backend.repo.FollowsRepository;
-import com.qt.backend.repo.PostRepository;
-import com.qt.backend.repo.RequestRepository;
+
 import com.qt.backend.repo.StoryRepository;
 import com.qt.backend.repo.StoryViewRepository;
 import com.qt.backend.repo.UserRepository;
@@ -26,9 +24,6 @@ public class StoryService {
     private final FollowsRepository followsRepository;
     private final UserRepository userRepository;
     private final StoryViewRepository storyViewRepository;
-    private final FollowsService followsService;
-    private final PostRepository postRepository;
-    private final RequestRepository requestRepository;
 
     public List<StoryDto> getStoryByUserId(String viewerId) {
         List<String> userIds = followsRepository.findFollowingNamesByUserId(viewerId);
@@ -64,17 +59,7 @@ public class StoryService {
     public List<UserDto> getStoryViewers(Long storyId, String loggedInUserId) {
         Story story = storyRepository.findById(storyId).orElseThrow(() -> new RuntimeException("Story not found"));
         List<UserDto> storyViews = storyViewRepository.findByStory(story);
-        // for(UserDto user : storyViews) {
-        //     user.setIsFollowed(followsService.isFollowing(loggedInUserId, user.getUserId()));
-        //     // user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
-        //     // user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
-        //     // user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
-        //     if(!user.isFollowed() && user.isPrivate()){
-        //         user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), loggedInUserId).isPresent());
-        //     }else{
-        //         user.setIsRequested(false);
-        //     }
-        // }
+      
         return storyViews;
     }
 }

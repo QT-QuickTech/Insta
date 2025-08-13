@@ -5,7 +5,6 @@ package com.qt.backend.service;
 import com.qt.backend.dto.NotificationDto;
 import com.qt.backend.repo.FollowsRepository;
 import com.qt.backend.repo.NotificationRepository;
-import com.qt.backend.repo.PostRepository;
 import com.qt.backend.repo.RequestRepository;
 
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final FollowsRepository followsRepository;
-    private final PostRepository postRepository;
     private final RequestRepository requestRepository;
 
     public Page<NotificationDto> getNotifications(String userId, int page) {
@@ -31,15 +29,12 @@ public class NotificationService {
         Page<NotificationDto> notifications = notificationRepository.findByUser(userId, pageable);
         notifications.forEach(notificationDto -> {
             notificationDto.setType(checkType(notificationDto.getText()));
-            // notificationDto.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, notificationDto.getUser().getUserId()));
-            // notificationDto.getUser().setPosts(postRepository.countPostsByUserId(notificationDto.getUser().getUserId()));
-            // notificationDto.getUser().setFollowers(followsRepository.countFollowersByUserId(notificationDto.getUser().getUserId()));
-            // notificationDto.getUser().setFollowing(followsRepository.countFollowingByUserId(notificationDto.getUser().getUserId()));
-            // if(!notificationDto.getUser().isFollowed() && notificationDto.getUser().isPrivate()){
-            //     notificationDto.getUser().setIsRequested(requestRepository.findByUserAndByUser(notificationDto.getUser().getUserId(), userId).isPresent());
-            // }else{
-            //     notificationDto.getUser().setIsRequested(false);
-            // }
+            notificationDto.getUser().setIsFollowed(followsRepository.findAnyFollowByUserIdAndFollowingId(userId, notificationDto.getUser().getUserId()));
+            if(!notificationDto.getUser().isFollowed() && notificationDto.getUser().isPrivate()){
+                notificationDto.getUser().setIsRequested(requestRepository.findByUserAndByUser(notificationDto.getUser().getUserId(), userId).isPresent());
+            }else{
+                notificationDto.getUser().setIsRequested(false);
+            }
         });
         return notifications;
     }

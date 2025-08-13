@@ -8,10 +8,8 @@ import com.qt.backend.model.Save;
 import com.qt.backend.model.Post;
 import com.qt.backend.model.User;
 import com.qt.backend.repo.PostRepository;
-import com.qt.backend.repo.RequestRepository;
 import com.qt.backend.repo.UserRepository;
 import com.qt.backend.repo.CommentRepository;
-import com.qt.backend.repo.FollowsRepository;
 
 import org.springframework.stereotype.Service;
 import com.qt.backend.repo.LikeRepository;
@@ -26,10 +24,10 @@ public class SaveService {
     private final SaveRepository saveRepository;
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
-    private final FollowsRepository followsRepository;
+
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final RequestRepository requestRepository;
+   
 
     public List<PostDto> getSavedPosts(String userId) {
         List<PostDto> posts = saveRepository.findSavedPostsByUserId(userId);

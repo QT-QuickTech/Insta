@@ -62,9 +62,7 @@ public class UserService {
         List<UserDto> users = userRepository.findUsersNotFollowedBy(userId, PageRequest.of(0, 10));
         for(UserDto user:users){
             user.setIsFollowed(false);
-            // user.setPosts(postRepository.countPostsByUserId(user.getUserId()));
-            // user.setFollowers(followsRepository.countFollowersByUserId(user.getUserId()));
-            // user.setFollowing(followsRepository.countFollowingByUserId(user.getUserId()));
+           
             if(!user.isFollowed() && user.isPrivate()){
                 user.setIsRequested(requestRepository.findByUserAndByUser(user.getUserId(), userId).isPresent());
             }else{
